@@ -19,12 +19,11 @@ jobs:
       # 이 액션은 로컬 리포지토리의 환경을 러너로 복사하는 액션
       - uses: actions/checkout@v2
 
-      # task의 이름과 동작시킬 스크립트(한줄짜리)
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # task의 이름과 동작시킬 스크립트(두줄 이상)
-      - name: Run a multi-line script
+      - name: Deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          aws s3 cp \
+            --region ap-northeast-2 \
+            sync ./dist s3://cdn-t
