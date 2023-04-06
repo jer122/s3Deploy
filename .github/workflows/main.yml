@@ -19,12 +19,14 @@ jobs:
       # 이 액션은 로컬 리포지토리의 환경을 러너로 복사하는 액션
       - uses: actions/checkout@v2
 
-      - name: Deploy
+      - name: deploy to s3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
         env:
+          AWS_S3_BUCKET: ${{secrets.AWS_PRODUCTION_BUCKET_NAME}}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: |
-          aws s3 sync \
-            --recursive \
-            --region ap-northeast-2 \
-            ./dist s3://cdn-t
+          AWS_REGION: ap-northeast-2
+          SOURCE_DIR: './'
+          DEST_DIR: 'scglab-status/'
