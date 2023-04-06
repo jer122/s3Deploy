@@ -1,5 +1,5 @@
 # main.yml
-name: master
+name: main
 
 on:
   push:
@@ -12,9 +12,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout source code
-        uses: actions/checkout@master
-
-
+        uses: actions/checkout@main
       - name: Deploy
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
